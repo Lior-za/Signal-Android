@@ -449,9 +449,9 @@ def assembleWebsiteDescriptor = { variant, file ->
 //    return outputFile
 //}
 
-task signProductionPlayRelease << {
-    signProductionRelease(android.applicationVariants.find({ it.name.equals("playRelease") }))
-}
+//task signProductionPlayRelease << {
+//    signProductionRelease(android.applicationVariants.find({ it.name.equals("playRelease") }))
+//}
 
 task signProductionWebsiteRelease << {
     def  variant       = android.applicationVariants.find({ it.name.equals("websiteRelease") })
