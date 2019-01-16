@@ -9,18 +9,18 @@ variables:
 before_script:
   - sudo apt-get --quiet update --yes
   - sudo apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
-  - sudo wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS}.zip
-  - sudo unzip -d android-sdk-linux android-sdk.zip
-  - sudo echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
-  - sudo echo y | android-sdk-linux/tools/bin/sdkmanager "platform-tools" >/dev/null
-  - sudo echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
-  - sudo export ANDROID_HOME=$PWD/android-sdk-linux
-  - sudo export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
-  - sudo chmod +x ./gradlew
+  - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS}.zip
+  - unzip -d android-sdk-linux android-sdk.zip
+  - echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
+  - echo y | android-sdk-linux/tools/bin/sdkmanager "platform-tools" >/dev/null
+  - echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
+  - export ANDROID_HOME=$PWD/android-sdk-linux
+  - export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
+  - chmod +x ./gradlew
   # temporarily disable checking for EPIPE error and use yes to accept all licenses
-  - sudo set +o pipefail
-  - sudo yes | android-sdk-linux/tools/bin/sdkmanager --licenses
-  - sudo set -o pipefail
+  - set +o pipefail
+  - yes | android-sdk-linux/tools/bin/sdkmanager --licenses
+  - set -o pipefail
 
 stages:
   - build
