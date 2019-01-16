@@ -434,43 +434,43 @@ def assembleWebsiteDescriptor = { variant, file ->
     }
 }
 
-//def signProductionRelease = { variant ->
-//    String apkName    = variant.outputs[0].outputFile.name
-//    File   inputFile  = new File(variant.outputs[0].outputFile.path);
-//    File   outputFile = new File(variant.outputs[0].outputFile.parent, apkName.replace("-unsigned", ""));
+def signProductionRelease = { variant ->
+    String apkName    = variant.outputs[0].outputFile.name
+    File   inputFile  = new File(variant.outputs[0].outputFile.path);
+    File   outputFile = new File(variant.outputs[0].outputFile.parent, apkName.replace("-unsigned", ""));
 
-//    new ApkSignerUtil("sun.security.pkcs11.SunPKCS11",
-//                      "pkcs11.config",
-//                      "PKCS11",
-//                      "file:pkcs11.password").calculateSignature(inputFile.getAbsolutePath(),
-//                                                                 outputFile.getAbsolutePath());
+    new ApkSignerUtil("sun.security.pkcs11.SunPKCS11",
+                      "pkcs11.config",
+                      "PKCS11",
+                      "file:pkcs11.password").calculateSignature(inputFile.getAbsolutePath(),
+                                                                 outputFile.getAbsolutePath());
+                                                                 
+    inputFile.delete();
+    return outputFile
+}
 
-//    inputFile.delete();
-//    return outputFile
+task signProductionPlayRelease << {
+    signProductionRelease(android.applicationVariants.find({ it.name.equals("playRelease") }))
+}
+
+task signProductionWebsiteRelease << {
+    def  variant       = android.applicationVariants.find({ it.name.equals("websiteRelease") })
+    File signedRelease = signProductionRelease(variant)
+    assembleWebsiteDescriptor(variant, signedRelease);
 //}
 
-//task signProductionPlayRelease << {
-//    signProductionRelease(android.applicationVariants.find({ it.name.equals("playRelease") }))
-//}
+//tasks.whenTaskAdded { task ->
+//    if (task.name.equals("lint")) {
+//        task.enabled = false
+//    }
 
-//task signProductionWebsiteRelease << {
-//    def  variant       = android.applicationVariants.find({ it.name.equals("websiteRelease") })
-//    File signedRelease = signProductionRelease(variant)
-//    assembleWebsiteDescriptor(variant, signedRelease);
-//}
-
-tasks.whenTaskAdded { task ->
-    if (task.name.equals("lint")) {
-        task.enabled = false
+    if (task.name.equals("assemblePlayRelease")) {
+        task.finalizedBy signProductionPlayRelease
     }
 
-   // if (task.name.equals("assemblePlayRelease")) {
-   //     task.finalizedBy signProductionPlayRelease
-   // }
-
-  //  if (task.name.equals("assembleWebsiteRelease")) {
-  //      task.finalizedBy signProductionWebsiteRelease
-  //  }
+    if (task.name.equals("assembleWebsiteRelease")) {
+        task.finalizedBy signProductionWebsiteRelease
+    }
 }
 
 def getLastCommitTimestamp() {
