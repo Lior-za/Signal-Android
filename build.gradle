@@ -453,11 +453,11 @@ def assembleWebsiteDescriptor = { variant, file ->
 //    signProductionRelease(android.applicationVariants.find({ it.name.equals("playRelease") }))
 //}
 
-task signProductionWebsiteRelease << {
-    def  variant       = android.applicationVariants.find({ it.name.equals("websiteRelease") })
-    File signedRelease = signProductionRelease(variant)
-    assembleWebsiteDescriptor(variant, signedRelease);
-}
+//task signProductionWebsiteRelease << {
+//    def  variant       = android.applicationVariants.find({ it.name.equals("websiteRelease") })
+//    File signedRelease = signProductionRelease(variant)
+//    assembleWebsiteDescriptor(variant, signedRelease);
+//}
 
 tasks.whenTaskAdded { task ->
     if (task.name.equals("lint")) {
@@ -468,9 +468,9 @@ tasks.whenTaskAdded { task ->
    //     task.finalizedBy signProductionPlayRelease
    // }
 
-    if (task.name.equals("assembleWebsiteRelease")) {
-        task.finalizedBy signProductionWebsiteRelease
-    }
+  //  if (task.name.equals("assembleWebsiteRelease")) {
+  //      task.finalizedBy signProductionWebsiteRelease
+  //  }
 }
 
 def getLastCommitTimestamp() {
