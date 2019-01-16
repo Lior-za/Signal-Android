@@ -25,4 +25,4 @@ android:
     - addon-google_apis-google-$ANDROID_API_LEVEL
 script:
   - ./gradlew build check
-install: travis_wait mvn install
+install: travis_wait
