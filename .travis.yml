@@ -1,4 +1,4 @@
-language: android
+language: minimal
 image: openjdk:8-jdk
 
 variables:
